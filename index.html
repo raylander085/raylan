@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifra de César</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px #0002;
+        }
+
+        h1 {
+            text-align: center;
+            color: #254c8a;
+        }
+
+        h2 {
+            color: #254c8a;
+            margin-top: 25px;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 20px;
+            margin-top: 15px;
+            margin-right: 8px;
+            border: none;
+            border-radius: 6px;
+            background: #254c8a;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #16345f;
+        }
+
+        #resultado {
+            background: #e8f0ff;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            overflow-wrap: anywhere;
+        }
+
+        .explicacao {
+            background: #f4f4f4;
+            padding: 15px;
+            border-left: 4px solid #254c8a;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Cifra de César</h1>
+
+    <p>
+        A Cifra de César é uma técnica de criptografia
+        que substitui cada letra por outra, deslocando
+        sua posição no alfabeto.
+    </p>
+
+    <h2>Passo 1 - Alfabeto de referência</h2>
+
+    <p id="alfabeto"></p>
+
+    <h2>Passo 2 - Digite sua mensagem</h2>
+
+    <label for="mensagem">Mensagem:</label>
+    <textarea id="mensagem" rows="3"
+        placeholder="Digite sua mensagem aqui..."></textarea>
+
+    <label for="chave">Chave de deslocamento:</label>
+    <input type="number" id="chave" value="3">
+
+    <button onclick="cifrar()">Cifrar mensagem</button>
+    <button onclick="decifrar()">Decifrar mensagem</button>
+
+    <div id="resultado">
+        <strong>Resultado:</strong>
+        <p id="textoResultado">Aguardando mensagem...</p>
+    </div>
+
+    <h2>Passo 3 - Como funciona?</h2>
+
+    <div class="explicacao">
+        <p><strong>Para cifrar:</strong> somamos a chave
+        à posição de cada letra.</p>
+
+        <p><strong>Para decifrar:</strong> subtraímos a
+        chave da posição de cada letra.</p>
+
+        <p>Utilizamos o operador % 26 para manter as
+        letras dentro do alfabeto.</p>
+    </div>
+
+    <h2>Desafio Final</h2>
+
+    <p>
+        Se uma mensagem foi criptografada com a chave 3,
+        devemos subtrair 3 da posição de cada letra
+        para recuperar o texto original.
+    </p>
+
+</div>
+
+<script>
+
+    const alfabeto = "abcdefghijklmnopqrstuvwxyz";
+
+    document.getElementById("alfabeto").textContent =
+        alfabeto;
+
+    function cifraDeCesar(texto, chave) {
+
+        let resultado = "";
+
+        texto = texto.toLowerCase();
+
+        for (let letra of texto) {
+
+            if (alfabeto.includes(letra)) {
+
+                let posicao = alfabeto.indexOf(letra);
+
+                let novaPosicao =
+                    (posicao + chave + 26) % 26;
+
+                resultado += alfabeto[novaPosicao];
+
+            } else {
+
+                resultado += letra;
+
+            }
+        }
+
+        return resultado;
+    }
+
+    function cifrar() {
+
+        let mensagem =
+            document.getElementById("mensagem").value;
+
+        let chave =
+            parseInt(document.getElementById("chave").value);
+
+        if (!mensagem || isNaN(chave)) {
+            alert("Digite uma mensagem e uma chave válida!");
+            return;
+        }
+
+        let resultado = cifraDeCesar(mensagem, chave);
+
+        document.getElementById("textoResultado").textContent =
+            resultado;
+    }
+
+    function decifrar() {
+
+        let mensagem =
+            document.getElementById("mensagem").value;
+
+        let chave =
+            parseInt(document.getElementById("chave").value);
+
+        if (!mensagem || isNaN(chave)) {
+            alert("Digite uma mensagem e uma chave válida!");
+            return;
+        }
+
+        let resultado = cifraDeCesar(mensagem, -chave);
+
+        document.getElementById("textoResultado").textContent =
+            resultado;
+    }
+
+</script>
+
+</body>
+</html>
